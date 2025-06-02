@@ -125,6 +125,10 @@ def load_data(DATA_PATH, CPT_CODES, YEARS, DIAGNOSIS_CODES):
     Using nsqip_tools to efficiently load and filter the data.
     """)
     
+    # Initialize variables
+    df = None
+    query_info = None
+    
     try:
         # Build the query
         query = nsqip_tools.load_data(DATA_PATH)
@@ -166,9 +170,8 @@ def load_data(DATA_PATH, CPT_CODES, YEARS, DIAGNOSIS_CODES):
         2. Ensure you have access to the data location
         3. Verify CPT codes and years are valid
         """).callout(kind="danger")
-        df = None
     
-    return df, query_info if 'query_info' in locals() else None
+    return df, query_info
 
 # --------------------------------------------------
 # CELL 4: Basic Data Overview
