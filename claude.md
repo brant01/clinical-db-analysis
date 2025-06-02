@@ -639,3 +639,56 @@ print(f"Need {n_per_group} participants per group")
 5. **Security is not optional** - treat all data as PHI
 
 When in doubt about research methods, statistical approaches, or clinical interpretation, stop and ask. The goal is rigorous, reproducible medical research that advances understanding of hearing and related disorders.
+
+## NSQIP-Specific Implementation Details
+
+### Critical Reminders
+- **Always use Polars**, never pandas - nsqip_tools is designed for Polars
+- **No emojis** in any documentation or code
+- **Sandbox mode** is enforced through helper scripts (./nsqip edit)
+- **Data is strings** - NSQIP outcomes are text like "No Complication", "Pneumonia", not 0/1
+- **Auto-detection** - Helper functions detect adult vs pediatric using age columns
+
+### Repository Structure
+```
+NSQIP-analysis/
+├── nsqip                      # Helper script for sandboxed marimo
+├── nsqip.bat                  # Windows version
+├── quickstart.py              # Interactive project setup
+├── shared/
+│   ├── templates/
+│   │   └── basic_analysis.py  # Marimo template with optional helpers
+│   ├── utils/
+│   │   └── nsqip_helpers.py  # Auto-detecting helper functions
+│   └── docs/
+│       ├── adult_data_dictionary.json
+│       └── pediatric_data_dictionary.json
+└── projects/                  # Researcher folders
+```
+
+### Key Technical Decisions
+1. **LazyFrame Support** - All helpers preserve DataFrame/LazyFrame type
+2. **Path-based data access** - No environment variables, paths in notebooks
+3. **String outcomes** - Handle NSQIP's text-based complication variables
+4. **Helper imports optional** - Template has commented imports to avoid IDE errors
+5. **Direct to main branch** - Simple Git workflow for beginners
+
+### NSQIP Data Characteristics
+- **Adult age**: AGE_AS_INT (integer years)
+- **Pediatric age**: AGE_DAYS (integer days)
+- **Outcomes**: Text strings ("No Complication" vs specific complication)
+- **ASA Class**: Text with description (e.g., "2-Mild Disturb")
+- **Sex**: Different capitalization (adult: "male", pediatric: "Male")
+- **SSI Variables**: SUPINFEC, WNDINFD, ORGSPCSSI (same names both datasets)
+
+### Collaboration Setup
+- Repository at: https://github.com/jabrant/NSQIP-analysis
+- Private repo - add collaborators via Settings → Manage access
+- Each researcher works in projects/lastname-description/
+- Shared utilities require maintainer approval
+
+### When Updating
+- Test with both adult and pediatric data
+- Ensure all functions handle both DataFrame and LazyFrame
+- Keep documentation beginner-friendly
+- Always consider PHI protection
