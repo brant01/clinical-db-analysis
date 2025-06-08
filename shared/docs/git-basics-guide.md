@@ -54,7 +54,7 @@ Here's what a typical work session looks like:
 git pull
 
 # 2. Open your analysis notebook
-./nsqip edit projects/smith-mortality/analysis.py
+./db edit projects/smith-mortality/analysis.py
 
 # ... work on your analysis ...
 

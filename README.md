@@ -1,10 +1,10 @@
-# NSQIP Collaborative Analysis Repository
+# Clinical Database Collaborative Analysis Repository
 
-Welcome! This repository helps surgical researchers collaborate on NSQIP data analysis. It's designed for beginners - no advanced technical knowledge required.
+Welcome! This repository helps clinical researchers collaborate on NSQIP (surgical outcomes) and NCDB (cancer outcomes) data analysis. It's designed for beginners - no advanced technical knowledge required.
 
 ## What This Repository Does
 
-- **Organizes** your NSQIP analysis projects
+- **Organizes** your NSQIP and NCDB analysis projects
 - **Provides** templates to get started quickly  
 - **Enables** collaboration without data sharing
 - **Protects** patient data automatically
@@ -13,7 +13,7 @@ Welcome! This repository helps surgical researchers collaborate on NSQIP data an
 
 Before starting, make sure you have:
 
-1. **NSQIP Data Access** - Your institution's NSQIP parquet files (created using nsqip_tools)
+1. **Clinical Data Access** - Your institution's NSQIP and/or NCDB parquet files (created using nsqip_tools or ncdb-tools)
 2. **Python** - Version 3.10 or newer ([Download Python](https://www.python.org/downloads/))
 3. **Git** - For collaboration ([Download Git](https://git-scm.com/downloads))
 4. **GitHub Account** - Free account for collaboration ([Sign up](https://github.com/))
@@ -30,8 +30,8 @@ Check your email for a GitHub invitation to collaborate on this repository. Clic
 Open your terminal (Mac) or Command Prompt (Windows) and run:
 
 ```bash
-git clone https://github.com/jabrant/NSQIP-analysis.git
-cd NSQIP-analysis
+git clone https://github.com/jabrant/clinical-db-analysis.git
+cd clinical-db-analysis
 ```
 
 If prompted for credentials, use your GitHub username and a personal access token (not your password).
@@ -44,7 +44,7 @@ If prompted for credentials, use your GitHub username and a personal access toke
 pip install uv
 
 # Install analysis tools
-uv pip install marimo nsqip-tools polars matplotlib seaborn
+uv pip install marimo nsqip-tools ncdb-tools polars matplotlib seaborn
 ```
 
 ### Step 4: Create Your Project Folder
@@ -73,13 +73,13 @@ cp shared/templates/basic_analysis.py projects/smith-mortality-analysis/analysis
 cd projects/smith-mortality-analysis
 
 # Open the analysis notebook using our helper script
-../../nsqip edit analysis.py
+../../db edit analysis.py
 ```
 
 Or from the repository root:
 
 ```bash
-./nsqip edit projects/smith-mortality-analysis/analysis.py
+./db edit projects/smith-mortality-analysis/analysis.py
 ```
 
 The helper script automatically uses sandbox mode to keep your environment clean.
@@ -87,10 +87,10 @@ The helper script automatically uses sandbox mode to keep your environment clean
 ## Repository Structure
 
 ```
-NSQIP-analysis/
+clinical-db-analysis/
 ├── README.md                  # This file
-├── nsqip                      # Helper script (Mac/Linux)
-├── nsqip.bat                  # Helper script (Windows)
+├── db                         # Helper script (Mac/Linux)
+├── db.bat                     # Helper script (Windows)
 ├── shared/                    # Resources for everyone
 │   ├── templates/            # Analysis templates
 │   │   └── basic_analysis.py # Start here!
@@ -103,24 +103,24 @@ NSQIP-analysis/
         └── results/          # Plots and tables
 ```
 
-## Using the NSQIP Helper Script
+## Using the Clinical Database Helper Script
 
 We provide a simple helper script that ensures notebooks always run in sandbox mode:
 
 **Mac/Linux:**
 ```bash
-./nsqip edit analysis.py    # Edit or create a notebook
-./nsqip run analysis.py     # Run notebook (read-only)
-./nsqip new                 # Create new notebook
-./nsqip help               # Show help
+./db edit analysis.py    # Edit or create a notebook
+./db run analysis.py     # Run notebook (read-only)
+./db new                 # Create new notebook
+./db help               # Show help
 ```
 
 **Windows:**
 ```bash
-nsqip.bat edit analysis.py    # Edit or create a notebook
-nsqip.bat run analysis.py     # Run notebook (read-only)
-nsqip.bat new                # Create new notebook
-nsqip.bat help              # Show help
+db.bat edit analysis.py    # Edit or create a notebook
+db.bat run analysis.py     # Run notebook (read-only)
+db.bat new                # Create new notebook
+db.bat help              # Show help
 ```
 
 This automatically installs required packages in an isolated environment.
@@ -137,10 +137,10 @@ git pull
 cd projects/your-project-name
 
 # 3. Open your analysis
-../../nsqip edit analysis.py
+../../db edit analysis.py
 ```
 
-**Windows users**: Use `..\..\nsqip.bat edit analysis.py`
+**Windows users**: Use `..\..\db.bat edit analysis.py`
 
 ### Saving Your Work
 
@@ -162,7 +162,7 @@ git push
 
 The template in `shared/templates/basic_analysis.py` shows you how to:
 
-1. **Load your data** using nsqip_tools
+1. **Load your data** using nsqip_tools or ncdb-tools
 2. **Filter cases** by CPT codes, years, or diagnoses  
 3. **Calculate outcomes** like mortality, complications, readmissions
 4. **Create visualizations** for publication
@@ -170,6 +170,7 @@ The template in `shared/templates/basic_analysis.py` shows you how to:
 
 ### Example: Loading Your Data
 
+**For NSQIP (Surgical Outcomes):**
 ```python
 import nsqip_tools
 import polars as pl
@@ -180,6 +181,23 @@ DATA_PATH = "/path/to/your/nsqip_parquet_dataset"
 # Load and filter data
 df = (nsqip_tools.load_data(DATA_PATH)
       .filter_by_cpt(["44970"])     # Laparoscopic appendectomy
+      .filter_by_year([2021, 2022])  # Recent years
+      .collect())
+
+print(f"Loaded {len(df)} cases")
+```
+
+**For NCDB (Cancer Outcomes):**
+```python
+import ncdb_tools
+import polars as pl
+
+# Set your data path (update this to your institution's path)
+DATA_PATH = "/path/to/your/ncdb_parquet_dataset"
+
+# Load and filter data
+df = (ncdb_tools.load_data(DATA_PATH)
+      .filter_by_site(["C50"])       # Breast cancer
       .filter_by_year([2021, 2022])  # Recent years
       .collect())
 
@@ -235,7 +253,9 @@ What factors predict 30-day mortality in emergency surgery?
 ### Resources
 
 - **nsqip_tools documentation**: See `shared/docs/nsqip_tools_README.md`
+- **ncdb-tools documentation**: See ncdb-tools package documentation
 - **NSQIP User Guide**: See `shared/docs/nsqip_puf_userguide_2022.pdf`
+- **NCDB User Guide**: See your institution's NCDB documentation
 - **Polars documentation**: [Polars User Guide](https://pola-rs.github.io/polars/user-guide/)
 - **Git Help**: [GitHub's Git Handbook](https://guides.github.com/introduction/git-handbook/)
 
@@ -256,4 +276,4 @@ See `shared/docs/maintainer-guide.md` for:
 
 ---
 
-**Remember**: Focus on your research questions, not the technology. This repository handles the technical details so you can concentrate on surgical outcomes research!
+**Remember**: Focus on your research questions, not the technology. This repository handles the technical details so you can concentrate on clinical outcomes research!

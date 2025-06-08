@@ -1,7 +1,7 @@
 [project]
-name = "nsqip-analysis"
+name = "clinical-db-analysis"
 version = "0.1.0"
-description = "Add your description here"
+description = "Collaborative repository for clinical database analysis using NSQIP and NCDB data"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-NSQIP Repository Quick Start
+Clinical Database Repository Quick Start
 
 Helps new users get started with their first project.
+Supports both NSQIP and NCDB databases.
 """
 
 import os
@@ -10,10 +11,27 @@ import sys
 import shutil
 from pathlib import Path
 import subprocess
+from datetime import datetime
 
 def main():
-    print("\nNSQIP Repository Quick Start")
+    print("\nClinical Database Repository Quick Start")
     print("="*40)
+    
+    # Select database type
+    print("\nWhich database are you working with?")
+    print("1. NSQIP (Surgical Outcomes)")
+    print("2. NCDB (Cancer Outcomes)")
+    db_choice = input("Enter 1 or 2: ").strip()
+    
+    if db_choice == "1":
+        db_type = "NSQIP"
+        template_file = "basic_analysis.py"
+    elif db_choice == "2":
+        db_type = "NCDB"
+        template_file = "clinical_db_analysis.py"
+    else:
+        print("Error: Please enter 1 or 2")
+        sys.exit(1)
     
     # Get researcher name
     print("\nFirst, let's set up your project folder.")
@@ -24,7 +42,10 @@ def main():
     
     # Get project description
     print("\nWhat are you analyzing?")
-    print("Examples: mortality, ssi-risk, readmissions")
+    if db_type == "NSQIP":
+        print("Examples: mortality, ssi-risk, readmissions, complications")
+    else:
+        print("Examples: survival, treatment-patterns, disparities, staging")
     description = input("Brief description: ").strip().lower().replace(" ", "-")
     if not description:
         print("Error: Description is required")
@@ -41,17 +62,23 @@ def main():
     print(f"\nCreating project: {project_name}")
     project_path.mkdir(parents=True)
     
-    # Copy template
-    template_src = Path("shared/templates/basic_analysis.py")
+    # Copy appropriate template
+    template_src = Path("shared/templates") / template_file
     template_dst = project_path / "analysis.py"
+    
+    # If the new template doesn't exist, fall back to basic
+    if not template_src.exists():
+        template_src = Path("shared/templates/basic_analysis.py")
+    
     shutil.copy2(template_src, template_dst)
-    print("✓ Copied analysis template")
+    print(f"✓ Copied {db_type} analysis template")
     
     # Create README
     readme_content = f"""# Project: {description.replace('-', ' ').title()}
 
 **Researcher**: Dr. {last_name.title()}  
-**Date Started**: {Path.ctime(project_path)}  
+**Database**: {db_type}  
+**Date Started**: {datetime.now().strftime('%Y-%m-%d')}  
 **Status**: In Progress
 
 ## Research Question
@@ -60,11 +87,21 @@ def main():
 
 ## Methods
 
-[Describe your methods]
+### Data Source
+- Database: {db_type}
+- Years: [Specify years]
+- Population: [Describe inclusion/exclusion criteria]
+
+### Analysis Plan
+[Describe your analytical approach]
 
 ## Key Findings
 
 [Update as you progress]
+
+## Notes
+
+[Any additional notes or considerations]
 """
     
     readme_path = project_path / "README.md"
@@ -78,13 +115,13 @@ def main():
     print(f"\n✅ Project '{project_name}' created successfully!")
     print("\nNext steps:")
     print(f"1. Edit your research question: projects/{project_name}/README.md")
-    print(f"2. Start your analysis: ./nsqip edit projects/{project_name}/analysis.py")
+    print(f"2. Start your analysis: ./db edit projects/{project_name}/analysis.py")
     print("\nHappy researching!")
     
     # Ask if they want to open the notebook now
     response = input("\nWould you like to open your analysis notebook now? (y/n): ")
     if response.lower() == 'y':
-        cmd = ["python3", "nsqip", "edit", f"projects/{project_name}/analysis.py"]
+        cmd = ["python3", "db", "edit", f"projects/{project_name}/analysis.py"]
         subprocess.run(cmd)
 
 if __name__ == "__main__":

@@ -1,0 +1,3 @@
+#!/bin/bash
+# Minimal wrapper - all logic is in db_helper.py
+python3 "$(dirname "$0")/db_helper.py" "$@"
