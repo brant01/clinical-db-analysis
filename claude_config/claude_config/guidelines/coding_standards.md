@@ -9,36 +9,10 @@
 
 ## Python Standards
 - Follow PEP 8 with Black formatter (88 char lines)
-- Type hints where helpful but not required
-- Comprehensive docstrings with examples
-- **ALWAYS use polars for dataframes (NEVER pandas)**
+- Type hints on all functions
+- Comprehensive docstrings
+- Use polars for dataframes (never pandas)
 - Prefer pathlib over os.path
-- Use marimo for notebooks (not Jupyter)
-- Import nsqip_tools or ncdb_tools for data loading
-- Avoid advanced Python patterns - write for beginners
-- Explicit is better than clever
-
-## Package Management
-- **Always use uv for package management**
-  ```bash
-  uv add [package]      # Add new package
-  uv run [command]      # Run commands
-  ```
-
-## Running Notebooks
-- **ALWAYS use the helper script (ensures sandbox mode)**
-  ```bash
-  ./db edit notebook.py    # Mac/Linux
-  db.bat edit notebook.py  # Windows
-  ```
-
-## Helper Function Requirements
-When adding new helper functions:
-- Must support both DataFrame and LazyFrame
-- Must auto-detect adult vs pediatric datasets when relevant
-- Include comprehensive docstrings with examples
-- Test with actual clinical data
-- Place in `shared/utils/` directory
 
 ## Rust Standards
 - Follow official Rust style guide
@@ -66,14 +40,6 @@ When adding new helper functions:
 - Use appropriate data structures
 - Consider memory usage
 - Benchmark critical paths
-- **Use LazyFrames when possible for large data**
-  ```python
-  # Exploration with LazyFrame
-  import polars as pl
-  df = pl.scan_parquet("/path/to/data/*.parquet")
-  print(df.columns)
-  sample = df.head(100).collect()
-  ```
 
 ## Documentation Requirements
 - Explain why, not what

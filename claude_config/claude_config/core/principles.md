@@ -6,7 +6,6 @@
 3. **VERIFY ASSUMPTIONS** - Question suggestions, even from the user
 4. **BE CRITICAL** - Present honest trade-offs
 5. **TEACH CLEARLY** - Explain thoroughly, assume self-taught programmer
-6. **BEGINNER FIRST** - This may be users' first coding experience
 
 ## Communication Rules
 - **NO** emojis, icons, or symbols in code or documentation

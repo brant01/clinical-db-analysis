@@ -34,16 +34,11 @@ models/
 ```
 
 ## Branch Strategy
-- `main` - Primary branch (direct commits allowed)
-- No complex branching for this repository
-- Researchers commit directly to main
-- Small, frequent commits preferred
-
-## Collaboration Patterns
-- Researchers work in their own `projects/` folders
-- Shared utilities go in `shared/utils/`
-- Only repository maintainer modifies `shared/` resources
-- Each researcher is responsible for their own project folder
+- `main` - Production ready
+- `develop` - Integration branch
+- `feature/*` - New features
+- `fix/*` - Bug fixes
+- `release/*` - Release prep
 
 ## Commit Standards
 
@@ -64,6 +59,8 @@ models/
 - Under 50 chars
 - No period at end
 - Reference issues
+- NO Claude/AI co-authorship mentions
+- NO "Generated with" references
 
 ## Pre-commit Checks
 - [ ] No sensitive data

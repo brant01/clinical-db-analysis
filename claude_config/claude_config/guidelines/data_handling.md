@@ -35,11 +35,17 @@ project_data/
 └── docs/            # Documentation
 ```
 
-## Data Path Management
-- Data paths should be set in notebooks, not environment variables
-- Each researcher manages their own data access
-- Never commit data paths to the repository
-- Use clear variable names like `DATA_PATH` for easy updates
+### Cross-Platform Path Support
+For data on network drives, use `@REMOTE_DRIVE@` in .env files:
+- Mac: `@REMOTE_DRIVE@` → `/Volumes`
+- WSL: `@REMOTE_DRIVE@` → `/mnt/r`
+- Linux: `@REMOTE_DRIVE@` → `/mnt`
+
+Example .env:
+```
+DATA_PATH=@REMOTE_DRIVE@/your_username/project/data
+MODEL_PATH=@REMOTE_DRIVE@/shared/models
+```
 
 ## Security Requirements
 - Encrypt at rest (AES-256)

@@ -30,6 +30,7 @@
 - [ ] Commit message formatted
 - [ ] Related changes only
 - [ ] Issue referenced
+- [ ] NO Claude or AI co-authorship mentions
 
 ## Final Commands
 ```bash

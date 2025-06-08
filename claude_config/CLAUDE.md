@@ -7,8 +7,8 @@
 - **Version:** See `claude_config/VERSION.md`
 
 ## Current Status
-- **Active Task:** Ready for development
-- **Last Updated:** 2025-06-07
+- **Active Task:** [Updated each session]
+- **Last Updated:** [Date]
 - **Next Steps:** See `claude_config/project/log.md`
 
 ## Navigation by Purpose
@@ -36,41 +36,7 @@
 - **Git workflow** → `claude_config/guidelines/git_workflow.md`
 
 ## Quick Commands
-
-### Development
-```bash
-# Create new project
-python3 quickstart.py
-
-# Edit notebook (Mac/Linux)
-./nsqip edit projects/your-name/analysis.py
-
-# Edit notebook (Windows)
-nsqip.bat edit projects\your-name\analysis.py
-
-# Run notebook read-only
-./nsqip run analysis.py
-```
-
-### Git Workflow
-```bash
-# Get latest changes
-git pull
-
-# Save your work
-git add projects/your-project/
-git commit -m "feat: add mortality analysis"
-git push
-```
-
-### Testing
-```bash
-# Run linter (if configured)
-ruff check .
-
-# Type check
-mypy shared/
-```
+[Project-specific commands will be added here]
 
 ## Remember
 - Think first, code second (80/20 rule)
