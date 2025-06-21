@@ -43,6 +43,18 @@ def setup():
     mo.md("""
     # NSQIP Analysis Template
     
+    ## About This Template
+    
+    This template provides a starting point for analyzing **Adult NSQIP** surgical outcomes data.
+    It includes interactive controls, standard quality metrics, and publication-ready visualizations.
+    
+    ### Key Features:
+    - Interactive parameter selection for CPT codes and years
+    - Automatic calculation of standard NSQIP quality outcomes
+    - Risk stratification by ASA class
+    - Export functions for research datasets
+    - Integration with optional helper functions
+    
     ## Step 1: Configure Your Data Path
     
     Update the DATA_PATH below to point to your institution's NSQIP parquet dataset.
@@ -66,50 +78,78 @@ def setup():
         Please update DATA_PATH to point to your NSQIP parquet dataset.
         Current path: {DATA_PATH}
         """).callout(kind="danger")
-    else:
-        mo.md(f"""
-        Data path confirmed: {DATA_PATH}
-        """).callout(kind="success")
+        mo.stop()
+    
+    mo.md(f"""
+    Data path confirmed: {DATA_PATH}
+    """).callout(kind="success")
     
     return DATA_PATH, data_path
 
 # --------------------------------------------------
-# CELL 2: Define Research Parameters
+# CELL 2: Define Research Parameters with Interactive Selection
 # --------------------------------------------------
 @app.cell
-def parameters(DATA_PATH):
+def parameters():
     """
-    Define your research parameters
+    Define your research parameters with interactive controls
     """
     mo.md("""
     ## Step 2: Define Your Research Parameters
     
-    Modify the parameters below for your specific analysis.
+    Use the controls below to configure your analysis.
     """)
     
-    # CPT codes of interest (examples - modify for your procedures)
-    # Common examples:
-    # - "44970": Laparoscopic appendectomy
-    # - "47562": Laparoscopic cholecystectomy  
-    # - "44140": Colectomy
-    CPT_CODES = ["44970", "47562"]
+    # Common CPT code options
+    common_cpt_codes = {
+        "44970": "Laparoscopic appendectomy",
+        "47562": "Laparoscopic cholecystectomy",
+        "44140": "Colectomy",
+        "44204": "Laparoscopic colectomy",
+        "49505": "Inguinal hernia repair",
+        "43280": "Laparoscopic fundoplication"
+    }
     
-    # Years to analyze
-    YEARS = [2021, 2022]
+    # Create interactive selectors
+    cpt_selector = mo.ui.multiselect(
+        options=list(common_cpt_codes.keys()),
+        value=["44970", "47562"],
+        label="Select CPT Codes"
+    )
     
-    # Optional: ICD diagnosis codes
-    # Leave empty list [] if not filtering by diagnosis
-    DIAGNOSIS_CODES = []
+    year_selector = mo.ui.multiselect(
+        options=[2019, 2020, 2021, 2022, 2023],
+        value=[2021, 2022],
+        label="Select Years"
+    )
+    
+    # Display controls
+    mo.md(f"""
+    ### Configure Your Analysis:
+    
+    {cpt_selector}
+    
+    {year_selector}
+    """)
+    
+    # Get selected values
+    CPT_CODES = cpt_selector.value
+    YEARS = year_selector.value
+    DIAGNOSIS_CODES = []  # Can add interactive selector if needed
     
     # Display selected parameters
-    mo.md(f"""
-    ### Selected Parameters:
-    - **CPT Codes**: {', '.join(CPT_CODES)}
-    - **Years**: {', '.join(map(str, YEARS))}
-    - **Diagnosis Codes**: {', '.join(DIAGNOSIS_CODES) if DIAGNOSIS_CODES else 'None'}
-    """)
+    if CPT_CODES and YEARS:
+        selected_cpts = [f"{code} ({common_cpt_codes.get(code, 'Custom')})" for code in CPT_CODES]
+        mo.md(f"""
+        ### Selected Parameters:
+        - **CPT Codes**: {', '.join(selected_cpts)}
+        - **Years**: {', '.join(map(str, YEARS))}
+        - **Diagnosis Codes**: {', '.join(DIAGNOSIS_CODES) if DIAGNOSIS_CODES else 'None'}
+        """)
+    else:
+        mo.md("**Please select at least one CPT code and year to continue**").callout(kind="warning")
     
-    return CPT_CODES, YEARS, DIAGNOSIS_CODES
+    return CPT_CODES, YEARS, DIAGNOSIS_CODES, cpt_selector, year_selector
 
 # --------------------------------------------------
 # CELL 3: Load and Filter Data
@@ -124,6 +164,11 @@ def load_data(DATA_PATH, CPT_CODES, YEARS, DIAGNOSIS_CODES):
     
     Using nsqip_tools to efficiently load and filter the data.
     """)
+    
+    # Check if parameters are selected
+    if not CPT_CODES or not YEARS:
+        mo.md("**Please select CPT codes and years above to load data**").callout(kind="info")
+        mo.stop()
     
     # Initialize variables
     df = None
@@ -170,6 +215,7 @@ def load_data(DATA_PATH, CPT_CODES, YEARS, DIAGNOSIS_CODES):
         2. Ensure you have access to the data location
         3. Verify CPT codes and years are valid
         """).callout(kind="danger")
+        mo.stop()
     
     return df, query_info
 
@@ -182,7 +228,8 @@ def data_overview(df):
     Provide basic overview of the loaded data
     """
     if df is None:
-        return mo.md("**No data loaded** - Please fix the data path above")
+        mo.md("**No data loaded** - Please fix the data path above").callout(kind="warning")
+        mo.stop()
     
     mo.md("""
     ## Step 4: Data Overview
@@ -238,7 +285,8 @@ def calculate_outcomes(df):
     Calculate standard NSQIP quality outcomes
     """
     if df is None:
-        return mo.md("**No data loaded**")
+        mo.md("**No data loaded**").callout(kind="warning")
+        mo.stop()
     
     mo.md("""
     ## Step 5: Key Surgical Outcomes
@@ -301,7 +349,8 @@ def create_plots(df, outcome_rates):
     Create basic visualizations
     """
     if df is None:
-        return mo.md("**No data loaded**")
+        mo.md("**No data loaded**").callout(kind="warning")
+        mo.stop()
     
     mo.md("""
     ## Step 6: Visualizations
@@ -379,7 +428,8 @@ def export_results(df, summary_df):
     Export results for publication
     """
     if df is None:
-        return mo.md("**No data loaded**")
+        mo.md("**No data loaded**").callout(kind="warning")
+        mo.stop()
     
     mo.md("""
     ## Step 7: Export Results
@@ -391,45 +441,128 @@ def export_results(df, summary_df):
     results_dir = Path("results")
     results_dir.mkdir(exist_ok=True)
     
-    # Export options
-    export_button = mo.ui.button(label="Export Summary Table to CSV")
+    # Export options with better state management
+    export_summary_btn = mo.ui.button(label="Export Summary Table to CSV")
+    export_dataset_btn = mo.ui.button(label="Export Filtered Dataset")
     
-    if export_button.value:
+    export_status = mo.md("")
+    
+    if export_summary_btn.value:
         # Export summary table
         output_file = results_dir / "outcome_summary.csv"
         summary_df.write_csv(output_file)
-        mo.md(f"""
-        **Exported successfully!**
+        export_status = mo.md(f"""
+        ✅ **Summary exported successfully!**
         
         File saved to: `{output_file}`
         """).callout(kind="success")
     
-    mo.md("""
+    if export_dataset_btn.value:
+        # Export filtered dataset (without PHI)
+        safe_columns = [
+            "OPERYR", "AGE_AS_INT", "SEX", "ASA_CLASS",
+            "DEATH30", "READMISSION", "REOPERATION", "SSI",
+            "PNEUMONIA", "UTI", "DVT", "PE"
+        ]
+        # Only include columns that exist in the dataframe
+        export_columns = [col for col in safe_columns if col in df.columns]
+        
+        df_export = df.select(export_columns)
+        output_file = results_dir / "analysis_dataset.parquet"
+        df_export.write_parquet(output_file)
+        export_status = mo.md(f"""
+        ✅ **Dataset exported successfully!**
+        
+        File saved to: `{output_file}`
+        Exported {len(df_export):,} rows with {len(export_columns)} columns
+        """).callout(kind="success")
+    
+    mo.md(f"""
     ### Export Options:
     
-    Click the button below to export the outcome summary table.
+    {export_summary_btn} {export_dataset_btn}
     
-    {export_button}
+    {export_status}
     
-    ### Additional Export Examples:
+    ### Data Privacy Note:
     
-    ```python
-    # Export filtered dataset (without PHI)
-    df_export = df.select([
-        "OPERYR", "AGE_AS_INT", "SEX", "ASA_CLASS",
-        "DEATH30", "READMISSION", "SSI"
-    ])
-    df_export.write_csv("results/analysis_dataset.csv")
-    
-    # Export for statistical software
-    df_export.write_parquet("results/analysis_dataset.parquet")
-    ```
+    The export functions above automatically exclude potentially identifying information.
+    Always verify your institution's data sharing policies before exporting.
     """)
     
-    return export_button
+    return export_summary_btn, export_dataset_btn, export_status
 
 # --------------------------------------------------
-# CELL 8: Using Helper Functions (Optional)
+# CELL 8: Advanced Analysis Options
+# --------------------------------------------------
+@app.cell
+def advanced_analysis(df):
+    """
+    Interactive advanced analysis options
+    """
+    if df is None:
+        mo.md("**No data loaded**").callout(kind="warning")
+        mo.stop()
+    
+    mo.md("""
+    ## Advanced Analysis Options
+    
+    Select additional analyses to perform:
+    """)
+    
+    # Create analysis options
+    analysis_options = mo.ui.multiselect(
+        options=[
+            "Risk-adjusted outcomes",
+            "Subgroup analysis",
+            "Temporal trends",
+            "Composite outcomes",
+            "Length of stay analysis"
+        ],
+        value=[],
+        label="Select Advanced Analyses"
+    )
+    
+    mo.md(f"{analysis_options}")
+    
+    # Show relevant analysis based on selection
+    if "Risk-adjusted outcomes" in analysis_options.value:
+        mo.md("""
+        ### Risk-Adjusted Analysis
+        
+        Consider adjusting for:
+        - Age and sex
+        - ASA class
+        - Emergency status
+        - Comorbidities (DIABETES, SMOKE, etc.)
+        """)
+    
+    if "Temporal trends" in analysis_options.value:
+        # Create temporal analysis
+        yearly_outcomes = (
+            df.group_by("OPERYR")
+            .agg([
+                pl.count().alias("n_cases"),
+                (pl.col("DEATH30") == 1).sum().alias("deaths"),
+                (pl.col("READMISSION") == 1).sum().alias("readmissions")
+            ])
+            .with_columns([
+                (pl.col("deaths") / pl.col("n_cases") * 100).alias("mortality_rate"),
+                (pl.col("readmissions") / pl.col("n_cases") * 100).alias("readmission_rate")
+            ])
+            .sort("OPERYR")
+        )
+        
+        mo.md(f"""
+        ### Temporal Trends
+        
+        {yearly_outcomes.to_pandas().to_markdown(index=False)}
+        """)
+    
+    return analysis_options
+
+# --------------------------------------------------
+# CELL 10: Using Helper Functions (Optional)
 # --------------------------------------------------
 @app.cell
 def helper_examples():
@@ -475,7 +608,7 @@ def helper_examples():
     """)
 
 # --------------------------------------------------
-# CELL 9: Next Steps
+# CELL 11: Next Steps
 # --------------------------------------------------
 @app.cell
 def next_steps():

@@ -19,70 +19,65 @@ Before starting, make sure you have:
 4. **GitHub Account** - Free account for collaboration ([Sign up](https://github.com/))
 5. **Repository Access** - Accept the invitation sent to your email
 
-## Getting Started (First Time Setup)
+## Getting Started
 
-### Step 1: Accept Repository Invitation
+### Step 1: Clone the Repository
 
-Check your email for a GitHub invitation to collaborate on this repository. Click the link to accept.
-
-### Step 2: Copy This Repository
-
-Open your terminal (Mac) or Command Prompt (Windows) and run:
+After accepting your GitHub invitation, clone this repository:
 
 ```bash
 git clone https://github.com/jabrant/clinical-db-analysis.git
 cd clinical-db-analysis
 ```
 
-If prompted for credentials, use your GitHub username and a personal access token (not your password).
-[Create a token here](https://github.com/settings/tokens) with "repo" permissions.
+### Step 2: Install Required Tools
 
-### Step 3: Install Required Tools
+Make sure you have Python 3.8+ and install uv (our package manager):
 
 ```bash
-# Install the package manager
 pip install uv
-
-# Install analysis tools
-uv pip install marimo nsqip-tools ncdb-tools polars matplotlib seaborn
 ```
 
-### Step 4: Create Your Project Folder
+### Step 3: Create Your Project Folder
 
-**Quick Start (Recommended for beginners):**
-```bash
-python3 quickstart.py
-```
+1. Create a folder for your analysis in the `projects` directory:
+   ```bash
+   mkdir projects/yourname-description
+   ```
+   Example: `mkdir projects/smith-mortality`
 
-This will guide you through creating your project folder.
+2. Copy the appropriate template for your database:
+   - **Adult NSQIP**: `cp shared/templates/nsqip_analysis.py projects/yourname-description/analysis.py`
+   - **Pediatric NSQIP**: `cp shared/templates/pnsqip_analysis.py projects/yourname-description/analysis.py`
+   - **NCDB**: `cp shared/templates/ncdb_analysis.py projects/yourname-description/analysis.py`
 
-**Manual Setup:**
-1. Navigate to the `projects` folder
-2. Create a new folder: `lastname-brief-description` (e.g., `smith-mortality-analysis`)
-3. Copy the analysis template:
+3. Create a README for your project:
+   ```bash
+   echo "# My Analysis Project" > projects/yourname-description/README.md
+   ```
 
-```bash
-# From the repository root directory
-cp shared/templates/basic_analysis.py projects/smith-mortality-analysis/analysis.py
-```
+### Step 4: Start Analyzing
 
-### Step 5: Start Your Analysis
+Open your analysis notebook:
 
 ```bash
-# Navigate to your project
-cd projects/smith-mortality-analysis
-
-# Open the analysis notebook using our helper script
-../../db edit analysis.py
+./db edit projects/yourname-description/analysis.py
 ```
 
-Or from the repository root:
+On Windows, use: `db.bat edit projects/yourname-description/analysis.py`
 
-```bash
-./db edit projects/smith-mortality-analysis/analysis.py
-```
+The `db` helper script will:
+- Install all required packages automatically
+- Open an interactive marimo notebook
+- Run in a clean, isolated environment
 
-The helper script automatically uses sandbox mode to keep your environment clean.
+### That's it! 🎉
+
+You're ready to start analyzing data. The template will guide you through:
+1. Setting your data path
+2. Loading and filtering data
+3. Creating visualizations
+4. Exporting results
 
 ## Repository Structure
 

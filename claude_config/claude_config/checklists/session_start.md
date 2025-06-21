@@ -1,36 +1,62 @@
 # Session Start Checklist
 
 ## Environment Setup
-- [ ] Navigate to project root
-- [ ] Activate environment
-- [ ] Pull latest changes
-- [ ] Check dependencies
-- [ ] Verify env variables
+- [ ] Navigate to project root: `cd clinical-db-analysis`
+- [ ] Pull latest changes: `git pull`
+- [ ] Check current branch: `git branch`
+- [ ] Verify uv installed: `uv --version`
 
 ## Context Review
-- [ ] Read `CLAUDE.md` status
-- [ ] Check recent `project/log.md`
-- [ ] Review TODOs from last session
-- [ ] Check CI/CD status
+- [ ] Read `CLAUDE.md` for current status
+- [ ] Check active projects: `ls projects/`
+- [ ] Review recent commits: `git log --oneline -5`
+- [ ] Note any incomplete analyses
 
-## Planning
-- [ ] Identify primary goal
-- [ ] Break into tasks
-- [ ] Estimate time needed
-- [ ] Note expert consultations needed
+## For New Analysis
+- [ ] Create project folder: `mkdir projects/lastname-topic`
+- [ ] Choose appropriate template:
+  - **Adult NSQIP**: `nsqip_analysis.py` - General surgery
+  - **Pediatric NSQIP**: `pnsqip_analysis.py` - Pediatric surgery
+  - **NCDB**: `ncdb_analysis.py` - Cancer outcomes
+- [ ] Copy template: `cp shared/templates/[template] projects/lastname-topic/analysis.py`
+- [ ] Create project README
+
+## For Continuing Work
+- [ ] Navigate to your project folder
+- [ ] Open notebook: `./db edit analysis.py`
+- [ ] Verify data path is still valid
+- [ ] Check previous results in `results/`
 
 ## Quick Checks
 ```bash
-# Python
+# Verify setup
+uv --version
 python --version
-pytest tests/unit/test_smoke.py
 
-# Rust
-cargo check
+# Check projects
+ls projects/
 
-# Git
+# Git status
 git status
-git log --oneline -5
+
+# View templates
+ls shared/templates/
+```
+
+## Common Tasks
+```bash
+# Start new analysis
+mkdir projects/smith-mortality
+cp shared/templates/nsqip_analysis.py projects/smith-mortality/analysis.py
+./db edit projects/smith-mortality/analysis.py
+
+# Continue existing
+./db edit projects/existing-project/analysis.py
+
+# Save work
+git add projects/my-project/
+git commit -m "Updated analysis results"
+git push
 ```
 
 **Today's Focus:** [Fill after review]

@@ -1,10 +1,5 @@
 # CLAUDE.md - Project Navigation Hub
 
-## 🚨 SESSION START CHECKLIST
-1. **Check directory name**: Should be `clinical-db-analysis` (not NSQIP-analysis)
-2. **If wrong name**: Exit and run `mv NSQIP-analysis clinical-db-analysis`
-3. **Then continue** with normal workflow
-
 ## Quick Start
 - **First time?** Read `claude_config/README.md`
 - **Starting work?** Check `claude_config/checklists/session_start.md`
@@ -14,19 +9,29 @@
 ## Project: Clinical Database Collaborative Analysis Repository
 - **Purpose:** Help clinical researchers collaborate on NSQIP and NCDB data analysis
 - **Status:** Active development
-- **Last Updated:** 2025-06-07
+- **Last Updated:** 2025-01-21
 
-## Recent Accomplishments (2025-06-07):
-- ✅ Successfully renamed directory from NSQIP-analysis to clinical-db-analysis
-- ✅ Created unified `db` wrapper scripts (Unix and Windows)
-- ✅ Removed old scripts (nsqip, clinical-db)
-- ✅ Updated all documentation to reference `./db`
-- ✅ Tested wrapper scripts - working correctly
-- ✅ Fixed quickstart.py Path.ctime() error
+## Recent Updates (2025-01-21):
+- ✅ Created marimo expert agent for notebook best practices
+- ✅ Developed three optimized analysis templates:
+  - Adult NSQIP (`nsqip_analysis.py`)
+  - Pediatric NSQIP (`pnsqip_analysis.py`)
+  - NCDB cancer data (`ncdb_analysis.py`)
+- ✅ Simplified workflow - removed quickstart.py and setup scripts
+- ✅ Updated documentation for manual project creation
+- ✅ All templates now include interactive UI components
+- ✅ Added .env configuration for data paths
 
-## Notes:
-- The `db_helper.py` file contains all the logic for the wrapper scripts
-- Both Unix (`db`) and Windows (`db.bat`) wrappers simply call this Python helper
-- The system is now consistent with the new `./db` command across all documentation
+## Workflow Summary:
+1. **Clone repository**: `git clone` → `cd clinical-db-analysis`
+2. **Create project**: `mkdir projects/name` → copy template
+3. **Start analyzing**: `./db edit projects/name/analysis.py`
+
+## Key Features:
+- **Marimo notebooks**: Interactive, reactive Python notebooks
+- **Sandboxed execution**: Clean environment via `uv run`
+- **Three templates**: Adult NSQIP, Pediatric NSQIP, NCDB
+- **Helper scripts**: `./db` (Unix) or `db.bat` (Windows)
+- **No data sharing**: Users provide their own data paths
 
 For full navigation and details, see `claude_config/README.md`
