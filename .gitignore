@@ -337,3 +337,5 @@ projects/*/*
 !projects/*/*.py
 !projects/*/*.md
 !projects/*/README*
+
+/claude_config

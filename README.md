@@ -88,7 +88,9 @@ clinical-db-analysis/
 ├── db.bat                     # Helper script (Windows)
 ├── shared/                    # Resources for everyone
 │   ├── templates/            # Analysis templates
-│   │   └── basic_analysis.py # Start here!
+│   │   ├── nsqip_analysis.py  # Adult NSQIP template
+│   │   ├── pnsqip_analysis.py # Pediatric NSQIP template
+│   │   └── ncdb_analysis.py   # NCDB cancer data template
 │   ├── utils/                # Helper functions
 │   └── docs/                 # Documentation
 └── projects/                  # Individual researcher folders
@@ -153,9 +155,25 @@ git commit -m "Add mortality analysis for emergency cases"
 git push
 ```
 
-## Using the Analysis Template
+## Choosing the Right Template
 
-The template in `shared/templates/basic_analysis.py` shows you how to:
+### Template Selection Guide
+
+- **`nsqip_analysis.py`** - For adult surgical outcomes (ACS NSQIP)
+  - Use for: General surgery, vascular, orthopedic procedures
+  - Key features: CPT code filtering, surgical complications, mortality
+
+- **`pnsqip_analysis.py`** - For pediatric surgical outcomes (ACS Pediatric NSQIP)
+  - Use for: Pediatric surgery cases
+  - Key features: Age-specific complications, pediatric risk factors
+
+- **`ncdb_analysis.py`** - For cancer outcomes (NCDB)
+  - Use for: Cancer treatment outcomes, survival analysis
+  - Key features: Cancer site filtering, stage analysis, treatment patterns
+
+## Using the Analysis Templates
+
+All templates include interactive UI components and show you how to:
 
 1. **Load your data** using nsqip_tools or ncdb-tools
 2. **Filter cases** by CPT codes, years, or diagnoses  
@@ -167,36 +185,56 @@ The template in `shared/templates/basic_analysis.py` shows you how to:
 
 **For NSQIP (Surgical Outcomes):**
 ```python
+# Example from nsqip_analysis.py template
+import marimo as mo
 import nsqip_tools
 import polars as pl
+import os
+from dotenv import load_dotenv
 
-# Set your data path (update this to your institution's path)
-DATA_PATH = "/path/to/your/nsqip_parquet_dataset"
+# Load environment variables
+load_dotenv()
 
-# Load and filter data
-df = (nsqip_tools.load_data(DATA_PATH)
-      .filter_by_cpt(["44970"])     # Laparoscopic appendectomy
-      .filter_by_year([2021, 2022])  # Recent years
-      .collect())
+# Interactive data path configuration
+data_path = mo.ui.text(
+    label="NSQIP Data Path:",
+    value=os.getenv("NSQIP_PATH", "/path/to/nsqip_parquet")
+)
 
-print(f"Loaded {len(df)} cases")
+# Load data with filters
+df = (
+    nsqip_tools.load_data(data_path.value)
+    .filter_by_cpt(["44970"])  # Laparoscopic appendectomy
+    .filter_by_year([2021, 2022])
+    .collect()
+)
 ```
 
 **For NCDB (Cancer Outcomes):**
 ```python
+# Example from ncdb_analysis.py template
+import marimo as mo
 import ncdb_tools
 import polars as pl
+import os
+from dotenv import load_dotenv
 
-# Set your data path (update this to your institution's path)
-DATA_PATH = "/path/to/your/ncdb_parquet_dataset"
+# Load environment variables
+load_dotenv()
 
-# Load and filter data
-df = (ncdb_tools.load_data(DATA_PATH)
-      .filter_by_site(["C50"])       # Breast cancer
-      .filter_by_year([2021, 2022])  # Recent years
-      .collect())
+# Interactive data path configuration
+data_path = mo.ui.text(
+    label="NCDB Data Path:",
+    value=os.getenv("NCDB_PATH", "/path/to/ncdb_parquet")
+)
 
-print(f"Loaded {len(df)} cases")
+# Load data with filters
+df = (
+    ncdb_tools.load_data(data_path.value)
+    .filter_by_site(["C50"])  # Breast cancer
+    .filter_by_year([2021, 2022])
+    .collect()
+)
 ```
 
 ## Data Security
@@ -262,12 +300,26 @@ What factors predict 30-day mortality in emergency surgery?
 4. **Write clear messages** - Help others understand your changes
 5. **Ask questions** - We're all learning together!
 
+## Environment Configuration
+
+Create a `.env` file in your project directory to store data paths:
+
+```bash
+# Example .env file
+NSQIP_PATH=/path/to/your/nsqip_parquet_dataset
+PNSQIP_PATH=/path/to/your/pnsqip_parquet_dataset
+NCDB_PATH=/path/to/your/ncdb_parquet_dataset
+```
+
+This keeps your data paths secure and makes notebooks portable.
+
 ## For Repository Maintainers
 
-See `shared/docs/maintainer-guide.md` for:
-- Adding new researchers
-- Creating shared utilities
-- Managing the repository
+To add new researchers:
+1. Send GitHub invitation to their email
+2. Have them clone the repository
+3. Guide them to create their project folder
+4. Review their first pull request
 
 ---
 

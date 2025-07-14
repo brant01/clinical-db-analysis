@@ -2,9 +2,9 @@
 
 ## Quick Start
 - **First time?** Read `claude_config/README.md`
-- **Starting work?** Check `claude_config/checklists/session_start.md`
-- **Project details?** See `claude_config/project/details.md`
-- **Version:** See `claude_config/VERSION.md`
+- **Starting work?** Check `claude_config/claude_config/checklists/session_start.md`
+- **Project details?** See `claude_config/claude_config/project/details.md`
+- **Version:** See `claude_config/claude_config/VERSION.md`
 
 ## Project: Clinical Database Collaborative Analysis Repository
 - **Purpose:** Help clinical researchers collaborate on NSQIP and NCDB data analysis
