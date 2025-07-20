@@ -1,77 +1,41 @@
-# Project Details - Clinical Database Analysis
+# Project Details - EDITABLE
 
-**Project Name:** Clinical Database Collaborative Analysis Repository  
-**Last Updated:** 2025-01-21  
-**Primary Developer:** Jason Brant  
-**Project Type:** Research Analysis Platform
+**Project Name:** [To be filled]  
+**Last Updated:** [Date]  
+**Primary Developer:** [Name]  
+**Project Type:** [Web app/CLI tool/Library/Analysis]
 
 ## Project Overview
-A collaborative platform enabling clinical researchers to analyze surgical and cancer outcomes data using NSQIP (adult and pediatric) and NCDB databases. The platform provides interactive notebook templates, automated environment management, and secure collaboration without requiring data sharing.
+[Brief description of what this project does and why it exists]
 
 ## Core Functionality
-- **Three specialized analysis templates:**
-  - Adult NSQIP - General surgical outcomes analysis
-  - Pediatric NSQIP - Pediatric-specific surgical analysis with age groupings
-  - NCDB - Cancer outcomes and survival analysis
-- **Interactive marimo notebooks** with reactive UI components for filtering and exploration
-- **Automated package management** via uv in sandboxed environments
-- **Simple three-step workflow:** clone → create project → analyze
-- **Secure collaboration** through Git while keeping data local
+- [Main feature 1]
+- [Main feature 2]
+- [Main feature 3]
 
 ## Technology Stack
-- **Primary Language:** Python 3.8+
+- **Primary Language:** [Python 3.x / Rust / etc]
 - **Key Libraries:** 
-  - marimo - Interactive reactive notebooks
-  - polars - High-performance dataframe operations
-  - nsqip-tools - NSQIP data loading and filtering
-  - ncdb-tools - NCDB data handling
-  - matplotlib/seaborn - Visualization
-- **Package Manager:** uv (for isolation and dependency management)
-- **Version Control:** Git/GitHub
+  - [Library 1 - purpose]
+  - [Library 2 - purpose]
+- **Database:** [If applicable]
+- **External APIs:** [If applicable]
 
 ## Domain Context
-**Medical Specialties:**
-- General Surgery (NSQIP)
-- Pediatric Surgery (P-NSQIP) 
-- Oncology (NCDB)
-
-**Research Areas:**
-- Surgical outcomes and quality improvement
-- Post-operative complications and mortality
-- Cancer treatment patterns and survival
-- Healthcare disparities
-- Risk adjustment and modeling
-
-**Data Sources:**
-- American College of Surgeons NSQIP
-- American College of Surgeons NCDB
-- Institution-specific data extracts
+[Specific domain information - medical specialty, research area, etc]
 
 ## Success Criteria
-- [x] Templates for all three databases (NSQIP, P-NSQIP, NCDB)
-- [x] Interactive UI components in all templates
-- [x] Simplified setup process (<10 minutes to first analysis)
-- [x] Marimo best practices implemented
-- [ ] Demo notebooks created
-- [ ] User documentation complete
-- [ ] First external collaborator onboarded
+- [ ] [Measurable goal 1]
+- [ ] [Measurable goal 2]
+- [ ] [Measurable goal 3]
 
 ## Constraints
-- **Performance:** Must handle datasets with millions of records
-- **Security:** No PHI in repository, data stays local
-- **Compliance:** HIPAA compliant, supports IRB requirements
-- **Usability:** Must be accessible to non-programmers
-- **Portability:** Cross-platform (Windows, Mac, Linux)
-
-## Key Design Decisions
-1. **Marimo over Jupyter:** Reactive programming model, better reproducibility
-2. **Polars over Pandas:** Better performance for large clinical datasets
-3. **Manual folder creation:** Simplicity over automation for beginners
-4. **Templates not scripts:** Guide users while allowing customization
-5. **Local data only:** Security and compliance prioritized
+- **Performance:** [Requirements]
+- **Security:** [Special requirements]
+- **Compliance:** [HIPAA/IRB/etc]
+- **Timeline:** [Deadlines]
 
 ## Related Documentation
-- Main README: `/README.md`
-- Marimo Expert: `/claude_config/experts/domain_experts/marimo_expert.md`
-- Data Handling Guidelines: `/claude_config/guidelines/data_handling.md`
-- Templates: `/shared/templates/`
+- [Link to requirements]
+- [Link to design docs]
+- [Link to research papers]

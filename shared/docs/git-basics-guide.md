@@ -54,7 +54,7 @@ Here's what a typical work session looks like:
 git pull
 
 # 2. Open your analysis notebook
-./db edit projects/smith-mortality/analysis.py
+uv run marimo edit --sandbox projects/smith-mortality/analysis.py
 
 # ... work on your analysis ...
 

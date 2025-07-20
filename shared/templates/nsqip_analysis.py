@@ -5,7 +5,7 @@
 # ---
 
 # Import required packages
-# When running with ./db edit, these will be automatically installed
+# When running with "uv run marimo edit --sandbox", these will be automatically installed
 import marimo as mo
 import polars as pl
 import nsqip_tools

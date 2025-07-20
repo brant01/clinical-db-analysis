@@ -5,7 +5,7 @@
 # ---
 
 # Import required packages
-# When running with ./db edit, these will be automatically installed
+# When running with "uv run marimo edit --sandbox", these will be automatically installed
 import marimo as mo
 import polars as pl
 import ncdb_tools
@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore')
 # Import our helper utilities (optional - uncomment if you want to use them)
 # import sys
 # sys.path.append(str(Path(__file__).parent.parent.parent / "shared" / "utils"))
-# from ncdb_helpers import *
+# from nsqip_helpers import *  # Contains general clinical data utilities
 
 # Set reproducible random seed
 np.random.seed(42)
@@ -645,7 +645,7 @@ def helper_examples():
     - `calculate_time_to_treatment()` - Treatment delays
     - `identify_receipt_of_treatment()` - Treatment indicators
     
-    Check the documentation in `shared/utils/ncdb_helpers.py` for details.
+    Check the documentation in `shared/utils/nsqip_helpers.py` for general utilities.
     """)
 
 # --------------------------------------------------

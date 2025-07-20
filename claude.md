@@ -25,13 +25,13 @@
 ## Workflow Summary:
 1. **Clone repository**: `git clone` → `cd clinical-db-analysis`
 2. **Create project**: `mkdir projects/name` → copy template
-3. **Start analyzing**: `./db edit projects/name/analysis.py`
+3. **Start analyzing**: `uv run marimo edit --sandbox projects/name/analysis.py`
 
 ## Key Features:
 - **Marimo notebooks**: Interactive, reactive Python notebooks
-- **Sandboxed execution**: Clean environment via `uv run`
+- **Sandboxed execution**: Clean environment via `uv run marimo --sandbox`
 - **Three templates**: Adult NSQIP, Pediatric NSQIP, NCDB
-- **Helper scripts**: `./db` (Unix) or `db.bat` (Windows)
+- **Simplified workflow**: Direct uv commands, no custom scripts
 - **No data sharing**: Users provide their own data paths
 
 For full navigation and details, see `claude_config/README.md`

@@ -14,10 +14,10 @@ Welcome! This repository helps clinical researchers collaborate on NSQIP (surgic
 Before starting, make sure you have:
 
 1. **Clinical Data Access** - Your institution's NSQIP and/or NCDB parquet files (created using nsqip_tools or ncdb-tools)
-2. **Python** - Version 3.10 or newer ([Download Python](https://www.python.org/downloads/))
-3. **Git** - For collaboration ([Download Git](https://git-scm.com/downloads))
-4. **GitHub Account** - Free account for collaboration ([Sign up](https://github.com/))
-5. **Repository Access** - Accept the invitation sent to your email
+2. **Python** - Version 3.13 or newer ([Download Python](https://www.python.org/downloads/))
+3. **uv** - Fast Python package manager ([Install uv](https://docs.astral.sh/uv/getting-started/installation/))
+4. **Git** - For collaboration ([Download Git](https://git-scm.com/downloads))
+5. **GitHub Account** - Free account for collaboration ([Sign up](https://github.com/))
 
 ## Getting Started
 
@@ -30,50 +30,53 @@ git clone https://github.com/jabrant/clinical-db-analysis.git
 cd clinical-db-analysis
 ```
 
-### Step 2: Install Required Tools
+### Step 2: Set Up Your Data Paths
 
-Make sure you have Python 3.8+ and install uv (our package manager):
+Copy the example environment file and update with your data paths:
 
 ```bash
-pip install uv
+cp .env.example .env
+# Edit .env with your actual data paths
 ```
 
-### Step 3: Create Your Project Folder
+### Step 3: Create Your Project
 
-1. Create a folder for your analysis in the `projects` directory:
-   ```bash
-   mkdir projects/yourname-description
-   ```
-   Example: `mkdir projects/smith-mortality`
+Create your own project folder and copy the appropriate template:
 
-2. Copy the appropriate template for your database:
-   - **Adult NSQIP**: `cp shared/templates/nsqip_analysis.py projects/yourname-description/analysis.py`
-   - **Pediatric NSQIP**: `cp shared/templates/pnsqip_analysis.py projects/yourname-description/analysis.py`
-   - **NCDB**: `cp shared/templates/ncdb_analysis.py projects/yourname-description/analysis.py`
+```bash
+# Create your project folder
+mkdir projects/yourname-description
+# Example: mkdir projects/smith-mortality
 
-3. Create a README for your project:
-   ```bash
-   echo "# My Analysis Project" > projects/yourname-description/README.md
-   ```
+# Copy the template for your data type:
+```
+
+**For Adult NSQIP:**
+```bash
+cp shared/templates/nsqip_analysis.py projects/yourname-description/analysis.py
+```
+
+**For Pediatric NSQIP:**
+```bash
+cp shared/templates/pnsqip_analysis.py projects/yourname-description/analysis.py
+```
+
+**For NCDB Cancer Data:**
+```bash
+cp shared/templates/ncdb_analysis.py projects/yourname-description/analysis.py
+```
 
 ### Step 4: Start Analyzing
 
-Open your analysis notebook:
+Open your copy of the template:
 
 ```bash
-./db edit projects/yourname-description/analysis.py
+uv run marimo edit --sandbox projects/yourname-description/analysis.py
 ```
-
-On Windows, use: `db.bat edit projects/yourname-description/analysis.py`
-
-The `db` helper script will:
-- Install all required packages automatically
-- Open an interactive marimo notebook
-- Run in a clean, isolated environment
 
 ### That's it! 🎉
 
-You're ready to start analyzing data. The template will guide you through:
+The template will guide you through:
 1. Setting your data path
 2. Loading and filtering data
 3. Creating visualizations
@@ -84,8 +87,8 @@ You're ready to start analyzing data. The template will guide you through:
 ```
 clinical-db-analysis/
 ├── README.md                  # This file
-├── db                         # Helper script (Mac/Linux)
-├── db.bat                     # Helper script (Windows)
+├── .env.example              # Environment configuration template
+├── pyproject.toml            # Project dependencies
 ├── shared/                    # Resources for everyone
 │   ├── templates/            # Analysis templates
 │   │   ├── nsqip_analysis.py  # Adult NSQIP template
@@ -100,28 +103,6 @@ clinical-db-analysis/
         └── results/          # Plots and tables
 ```
 
-## Using the Clinical Database Helper Script
-
-We provide a simple helper script that ensures notebooks always run in sandbox mode:
-
-**Mac/Linux:**
-```bash
-./db edit analysis.py    # Edit or create a notebook
-./db run analysis.py     # Run notebook (read-only)
-./db new                 # Create new notebook
-./db help               # Show help
-```
-
-**Windows:**
-```bash
-db.bat edit analysis.py    # Edit or create a notebook
-db.bat run analysis.py     # Run notebook (read-only)
-db.bat new                # Create new notebook
-db.bat help              # Show help
-```
-
-This automatically installs required packages in an isolated environment.
-
 ## Daily Workflow
 
 ### Starting Your Work Session
@@ -130,14 +111,9 @@ This automatically installs required packages in an isolated environment.
 # 1. Get latest updates
 git pull
 
-# 2. Navigate to your project
-cd projects/your-project-name
-
-# 3. Open your analysis
-../../db edit analysis.py
+# 2. Open your analysis
+uv run marimo edit --sandbox projects/yourname-description/analysis.py
 ```
-
-**Windows users**: Use `..\..\db.bat edit analysis.py`
 
 ### Saving Your Work
 
@@ -146,7 +122,7 @@ cd projects/your-project-name
 git status
 
 # 2. Add your changes
-git add projects/your-project-name/
+git add projects/yourname-description/
 
 # 3. Save with a message
 git commit -m "Add mortality analysis for emergency cases"
@@ -272,16 +248,12 @@ What factors predict 30-day mortality in emergency surgery?
 
 ### Common Issues
 
-**"Permission denied" error**
-- Make sure you've accepted the GitHub invitation
-- Check that you're using a personal access token, not your password
-
 **"Cannot find data" error**  
-- Check your DATA_PATH in the notebook
+- Check your data path in the notebook
 - Ensure you have access to the network drive
 
 **"Package not found" error**
-- Run: `uv pip install [package-name]`
+- Run: `uv add [package-name]` to add missing packages to the project
 
 ### Resources
 
@@ -302,16 +274,16 @@ What factors predict 30-day mortality in emergency surgery?
 
 ## Environment Configuration
 
-Create a `.env` file in your project directory to store data paths:
+The repository includes a `.env.example` file showing the required environment variables. During setup (Step 2), you copied this to `.env` and updated it with your actual data paths.
+
+If you need to update your data paths later:
 
 ```bash
-# Example .env file
-NSQIP_PATH=/path/to/your/nsqip_parquet_dataset
-PNSQIP_PATH=/path/to/your/pnsqip_parquet_dataset
-NCDB_PATH=/path/to/your/ncdb_parquet_dataset
+# Edit your .env file
+nano .env  # or use your preferred text editor
 ```
 
-This keeps your data paths secure and makes notebooks portable.
+This keeps your data paths secure and makes notebooks portable across different machines.
 
 ## For Repository Maintainers
 

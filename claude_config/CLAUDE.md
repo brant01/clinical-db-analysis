@@ -7,9 +7,9 @@
 - **Version:** See `claude_config/VERSION.md`
 
 ## Current Status
-- **Active Task:** Simplified workflow implementation
-- **Last Updated:** 2025-01-21
-- **Next Steps:** Create demo notebooks
+- **Active Task:** [Updated each session]
+- **Last Updated:** [Date]
+- **Next Steps:** See `claude_config/project/log.md`
 
 ## Navigation by Purpose
 
@@ -27,7 +27,6 @@
 ### Expert Consultation
 - **Code quality** → `claude_config/experts/core_experts/software_engineer.md`
 - **Medical research** → `claude_config/experts/domain_experts/medical_research.md`
-- **Marimo notebooks** → `claude_config/experts/domain_experts/marimo_expert.md`
 - **ML/AI guidance** → `claude_config/experts/domain_experts/ml_ai_expert.md`
 - **Data compliance** → `claude_config/experts/core_experts/data_compliance.md`
 - **Claude usage** → `claude_config/experts/core_experts/claude_expert.md`
@@ -37,22 +36,9 @@
 - **Git workflow** → `claude_config/guidelines/git_workflow.md`
 
 ## Quick Commands
-```bash
-# Create new project
-mkdir projects/lastname-analysis
-cp shared/templates/nsqip_analysis.py projects/lastname-analysis/analysis.py
-
-# Start analyzing
-./db edit projects/lastname-analysis/analysis.py
-
-# Update from remote
-git pull
-
-# Save work
-git add . && git commit -m "message" && git push
-```
+[Project-specific commands will be added here]
 
 ## Remember
-- Users provide their own data paths
-- Templates guide the analysis workflow
-- Marimo notebooks are reactive - changes propagate automatically
+- Think first, code second (80/20 rule)
+- Consult experts when needed
+- Update log after each session
