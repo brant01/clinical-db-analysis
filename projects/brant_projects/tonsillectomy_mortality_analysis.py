@@ -8,12 +8,13 @@
 #     "polars==1.31.0",
 #     "scikit-learn==1.7.1",
 #     "seaborn==0.13.2",
+#     "nsqip-tools==0.2.2",
 # ]
 # ///
 
 import marimo
 
-__generated_with = "0.14.12"
+__generated_with = "0.14.13"
 app = marimo.App()
 
 
