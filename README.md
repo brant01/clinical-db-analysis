@@ -82,6 +82,49 @@ The template will guide you through:
 3. Creating visualizations
 4. Exporting results
 
+## ⚠️ Current Known Issues
+
+### Data Loading Issues (July 2024)
+
+**If you encounter errors when loading NSQIP data**, use this alternative approach:
+
+Instead of using nsqip_tools, load data directly with polars:
+
+```python
+import polars as pl
+from pathlib import Path
+
+# Load NSQIP data directly
+DATA_PATH = Path("/path/to/your/data/adult_nsqip_parquet")
+df = (
+    pl.scan_parquet(DATA_PATH / "*.parquet")
+    .with_columns([
+        # Clean problematic columns
+        pl.col("MORBPROB").map_elements(
+            lambda x: None if str(x).strip() in ["", " "] else x,
+            return_dtype=pl.Float64
+        ),
+        pl.col("MORTPROB").map_elements(
+            lambda x: None if str(x).strip() in ["", " "] else x,
+            return_dtype=pl.Float64
+        ),
+    ])
+    .filter(
+        # Your filters here
+        (pl.col("ALL_CPT_CODES").list.len() == 1) &
+        (pl.col("ALL_CPT_CODES").list.first().is_in(["42821", "42826"]))
+    )
+    .collect()
+)
+```
+
+**Issues being resolved:**
+- nsqip_tools filter_by_cpt() method has a bug with column references
+- Parquet files have schema inconsistencies across years
+- Some numeric columns contain empty strings instead of null values
+
+These issues are being addressed in upcoming updates to nsqip_tools and the parquet creation process.
+
 ## Repository Structure
 
 ```
